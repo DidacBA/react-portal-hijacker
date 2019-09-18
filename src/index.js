@@ -10,7 +10,7 @@ export default class Hijacker extends Component {
   componentDidMount() {
     this.mounted = true;
 
-    const nodeList = document.querySelectorAll(this.props.nodeSelector);
+    const nodeList = document.querySelectorAll(`.${this.props.nodeSelector}`);
     
     if (nodeList.length > 0 && this.mounted) {
       this.setState({
@@ -18,18 +18,19 @@ export default class Hijacker extends Component {
       });
     }
 
-    const mutationObserver = new MutationObserver(mutations => {
+    this.mutationObserver = new MutationObserver(mutations => {
       mutations.forEach(mutation => {
         const newNodes = mutation.addedNodes;
+
         newNodes.forEach(node => {
-          if (this.mounted && node.classList) {
-              this.setState(prevState => ({nodeList: [node]}));
+          if (this.mounted && node.classList && node.classList.contains(`${this.props.nodeSelector}`)) {
+              this.setState(prevState => ({nodeList: [...this.state.nodeList, node]}));
           }
         });
       });
     });
     
-    mutationObserver.observe(document.body, {
+    this.mutationObserver.observe(document.body, {
       attributes: false,
       characterData: false,
       childList: true,
@@ -39,8 +40,9 @@ export default class Hijacker extends Component {
     });
   }
 
-  componentWillUnmount(){
+  componentWillUnmount() {
     this.mounted = false;
+    this.mutationObserver.disconnect;
   }
 
   render() {
@@ -60,6 +62,11 @@ export default class Hijacker extends Component {
     </>
   }
 }
+
+Hijacker.propTypes = {
+  nodeSelector: PropTypes.string,
+  overwrite: PropTypes.bool
+};
 
 class Portal extends Component {
   render() {
