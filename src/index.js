@@ -2,6 +2,10 @@ import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import PropTypes from 'prop-types';
 
+const propTypes = {
+  nodeSelector: PropTypes.string.isRequired,
+}
+
 export default class Hijacker extends Component {
   state = {
     nodeList: [],
@@ -63,10 +67,7 @@ export default class Hijacker extends Component {
   }
 }
 
-Hijacker.propTypes = {
-  nodeSelector: PropTypes.string,
-  overwrite: PropTypes.bool
-};
+Hijacker.propTypes = propTypes;
 
 class Portal extends Component {
   render() {
