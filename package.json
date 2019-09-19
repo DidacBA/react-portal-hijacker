@@ -1,8 +1,8 @@
 {
   "name": "react-portal-hijacker",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "React component that allows you to hijack DOM nodes through React Portals",
-  "main": "index.js",
+  "main": "./lib/react-portal-hijacker.js",
   "scripts": {
     "build": "NODE_ENV='production' webpack",
     "start": "webpack-dev-server",
