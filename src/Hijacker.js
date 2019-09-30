@@ -23,7 +23,13 @@ export default class Hijacker extends Component {
 
         newNodes.forEach(node => {
           if (this.mounted && node.classList && node.classList.contains(`${this.props.nodeSelector}`)) {
-              this.setState(prevState => ({nodeList: [...this.state.nodeList, node]}));
+              let nodeObject = {
+                node,
+                nodeSize: node.getBoundingClientRect()
+              };
+              this.setState(prevState => ({
+                nodeList: [...this.state.nodeList, nodeObject],
+              }));
           }
         });
       });
@@ -47,9 +53,9 @@ export default class Hijacker extends Component {
   render() {
     const nodeList = [...this.state.nodeList];
 
-    const portal = (nodeList.length > 0) ? nodeList.map((node, i) =>
+    const portal = (nodeList.length > 0) ? nodeList.map((nodeObject, i) =>
       (
-        <Portal key={ i } node={ node }>
+        <Portal key={ i } node={ nodeObject.node } nodeSize={ nodeObject.nodeSize }>
           { this.props.children }
         </Portal>
       )
